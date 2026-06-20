@@ -377,6 +377,7 @@ section {
   padding: 2rem;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+  
 }
 
 .bento-stat {
@@ -743,4 +744,44 @@ body{
     height: 450px;
   }
 
+}
+
+/* =========================================================
+   AJOUT POUR QUE LE SITE SOIT RESPONSIVE 
+========================================================= */
+/* Responsive mobile */
+@media (max-width: 768px) {
+
+  .hero-section::before{
+    width: 500px;
+    height: 500px;
+    top: -200px;
+    right: -150px;
+  }
+
+  .hero-section::after{
+    width: 400px;
+    height: 400px;
+    bottom: -150px;
+    left: -120px;
+  }
+
+  .hero-lines span:nth-child(1){
+    width: 600px;
+    height: 600px;
+    top: -250px;
+    right: -180px;
+  }
+
+  .hero-lines span:nth-child(2){
+    width: 450px;
+    height: 450px;
+  }
+
+  .hero-lines span:nth-child(3){
+    width: 350px;
+    height: 350px;
+    bottom: -120px;
+    left: -80px;
+  }
 }
