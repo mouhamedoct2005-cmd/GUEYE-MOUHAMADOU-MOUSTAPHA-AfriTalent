@@ -168,7 +168,113 @@ if (backToTopBtn) {
    6. COMPTEURS ANIMÉS — Commit 7
    ============================================================ */
 
-// Sera implémenté au Commit 7 avec IntersectionObserver
+
+// On sélectionne tous les éléments avec la classe stat-number
+const statElements = document.querySelectorAll('.stat-number');
+
+// Fonction qui anime un compteur de 0 jusqu'à sa valeur cible
+function animerCompteur(element) {
+
+  // On lit la valeur cible depuis l'attribut data-target
+  const cible = parseInt(element.getAttribute('data-target'));
+
+  // Valeur de départ
+  let valeurActuelle = 0;
+
+  // On calcule le pas d'incrémentation
+  // Plus la cible est grande, plus le pas est grand
+  const pas = Math.ceil(cible / 80);
+
+  // On crée un intervalle qui s'exécute toutes les 20ms
+  const intervalle = setInterval(function() {
+
+    // On ajoute le pas à la valeur actuelle
+    valeurActuelle += pas;
+
+    // Si on dépasse la cible, on s'arrête exactement à la cible
+    if (valeurActuelle >= cible) {
+      valeurActuelle = cible;
+      clearInterval(intervalle); // On arrête l'intervalle
+    }
+
+    // On affiche la valeur avec un séparateur de milliers
+    // ex: 12000 → 12 000
+    element.textContent = valeurActuelle.toLocaleString('fr-FR');
+
+  }, 20);
+}
+
+// On crée un IntersectionObserver pour détecter
+// quand les compteurs entrent dans le viewport
+const observateurCompteurs = new IntersectionObserver(function(entries) {
+
+  entries.forEach(function(entry) {
+
+    // Si l'élément est visible dans le viewport
+    if (entry.isIntersecting) {
+
+      // On lance l'animation du compteur
+      animerCompteur(entry.target);
+
+      // On arrête d'observer cet élément
+      // pour que l'animation ne se relance pas
+      observateurCompteurs.unobserve(entry.target);
+    }
+  });
+
+}, {
+  // L'animation se déclenche quand 20% de l'élément est visible
+  threshold: 0.2
+});
+
+// On observe chaque élément stat-number
+statElements.forEach(function(el) {
+  // On remet à 0 avant d'observer
+  el.textContent = '0';
+  observateurCompteurs.observe(el);
+});
+
+
+/* ============================================================
+   7. ANIMATIONS FADE-IN AU SCROLL
+   - Les sections apparaissent en fondu quand elles entrent
+     dans le viewport
+   - Utilise IntersectionObserver
+   ============================================================ */
+
+// On sélectionne toutes les sections et articles à animer
+const elementsAAnimer = document.querySelectorAll(
+  'section, article, .card, .bento-card, .freelance-card, .pricing-card, .team-card, .valeur-card, .category-card'
+);
+
+// On crée un IntersectionObserver pour le fade-in
+const observateurFadeIn = new IntersectionObserver(function(entries) {
+
+  entries.forEach(function(entry) {
+
+    // Si l'élément est visible dans le viewport
+    if (entry.isIntersecting) {
+
+      // On ajoute la classe qui déclenche l'animation CSS
+      entry.target.classList.add('fade-in-visible');
+
+      // On arrête d'observer une fois animé
+      observateurFadeIn.unobserve(entry.target);
+    }
+  });
+
+}, {
+  // L'animation se déclenche quand 10% de l'élément est visible
+  threshold: 0.1
+});
+
+// On observe chaque élément
+elementsAAnimer.forEach(function(el) {
+  // On ajoute la classe de départ (invisible)
+  el.classList.add('fade-in-init');
+  // On commence à observer
+  observateurFadeIn.observe(el);
+});
 
 
 /* ============================================================
