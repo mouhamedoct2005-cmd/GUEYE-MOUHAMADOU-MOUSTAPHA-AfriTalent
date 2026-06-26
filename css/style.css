@@ -1,45 +1,52 @@
+/* ============================================================
+   AfriTalent — style.css
+   Auteur    : [Ton Prénom NOM]
+   Classe    : Licence 1 Informatique
+   Date      : 2026
+   ============================================================ */
 
-/* =========================================================
-   AFRITALENT — STYLE GLOBAL SIMPLIFIÉ
-========================================================= */
 
-/* ================= VARIABLES ================= */
+/* ============================================================
+   1. VARIABLES CSS
+   ============================================================ */
 
 :root {
-  --primary: #f5a623;
-  --secondary: #1a1a2e;
-  --accent: #e94560;
+  --primary:      #F5A623;
+  --secondary:    #1A1A2E;
+  --accent:       #E94560;
+  --text:         #2D2D2D;
+  --text-light:   #6B7280;
+  --bg:           #F9F9F9;
+  --white:        #FFFFFF;
+  --border:       #E5E7EB;
 
-  --text: #2d2d2d;
-  --text-light: #6b7280;
+  --title-font:   'Syne', sans-serif;
+  --body-font:    'Inter', sans-serif;
 
-  --bg: #f9f9f9;
-  --white: #fff;
-  --border: #e5e7eb;
-
-  --title-font: "Syne", sans-serif;
-  --body-font: "Inter", sans-serif;
-
-  --radius: 16px;
-
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-
-  --transition: 0.3s ease;
+  --radius:       16px;
+  --shadow:       0 4px 20px rgba(0, 0, 0, 0.1);
+  --transition:   0.3s ease;
 }
 
-/* ================= DARK MODE ================= */
+
+/* ============================================================
+   2. DARK MODE — redéfinition des variables
+   ============================================================ */
 
 body.dark-mode {
-  --bg: #0f0f1a;
-  --white: #1a1a2e;
-  --text: #f1f1f1;
-  --text-light: #a0aec0;
-  --border: #2d2d4e;
+  --bg:         #0F0F1A;
+  --white:      #1A1A2E;
+  --text:       #F1F1F1;
+  --text-light: #A0AEC0;
+  --border:     #2D2D4E;
 }
 
-/* ================= RESET ================= */
 
-* {
+/* ============================================================
+   3. RESET & BASE
+   ============================================================ */
+
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -51,13 +58,14 @@ html {
 
 body {
   font-family: var(--body-font);
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--text);
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 img {
-  width: 100%;
+  max-width: 100%;
   display: block;
 }
 
@@ -71,18 +79,33 @@ ul {
   padding: 0;
 }
 
-/* ================= TITRES ================= */
-
-h1,
-h2,
-h3,
-h4 {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--title-font);
   font-weight: 700;
+  color: var(--text);
 }
 
+p {
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+section {
+  padding: 100px 0;
+}
+
+main {
+  padding-top: 70px;
+}
+
+
+/* ============================================================
+   4. CLASSES UTILITAIRES
+   ============================================================ */
+
 .section-title {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 800;
   margin-bottom: 1rem;
 }
 
@@ -91,71 +114,132 @@ h4 {
   margin-bottom: 3rem;
 }
 
-/* ================= NAVBAR ================= */
+
+/* ============================================================
+   5. NAVBAR
+   ============================================================ */
 
 #mainNavbar {
-  background: transparent;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
   transition: var(--transition);
-  padding: 1rem 0;
+  padding: 0.8rem 0;
 }
 
 #mainNavbar.navbar-scrolled {
-  background: var(--secondary);
   box-shadow: var(--shadow);
 }
 
-.brand-name {
-  color: var(--white);
+#mainNavbar .navbar-brand {
   font-family: var(--title-font);
   font-weight: 800;
-  margin-left: 0.5rem;
+  color: var(--secondary);
 }
 
-.nav-link {
-  color: var(--white);
+#mainNavbar .nav-link {
+  color: var(--secondary);
   font-weight: 500;
+  transition: color var(--transition);
 }
 
-.nav-link:hover,
-.nav-link.active {
+#mainNavbar .nav-link:hover,
+#mainNavbar .nav-link.active {
   color: var(--primary);
 }
 
+/* Bouton CTA navbar */
 .btn-cta-nav {
   background: var(--primary);
   color: var(--secondary);
-  padding: 0.7rem 1.2rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 10px;
   font-weight: 700;
+  border: none;
 }
 
 .btn-cta-nav:hover {
   background: #e29a1d;
+  color: var(--secondary);
 }
 
+/* Bouton dark mode */
 .btn-icon {
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: var(--white);
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  color: var(--secondary);
+  border-radius: 8px;
+  padding: 0.4rem 0.7rem;
+  transition: var(--transition);
+  cursor: pointer;
 }
 
-/* MENU MOBILE */
+.btn-icon:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
 
+/* Menu mobile */
 @media (max-width: 991px) {
   .navbar-collapse {
     background: var(--secondary);
     padding: 1rem;
-    border-radius: 16px;
-    margin-top: 1rem;
+    border-radius: var(--radius);
+    margin-top: 0.5rem;
+  }
+
+  .navbar-collapse .nav-link {
+    color: #F1F1F1 !important;
   }
 }
 
-/* ================= HERO ================= */
+
+/* ============================================================
+   6. NAVBAR — DARK MODE
+   ============================================================ */
+
+body.dark-mode #mainNavbar {
+  background-color: rgba(10, 10, 20, 0.97) !important;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode #mainNavbar .navbar-brand,
+body.dark-mode #mainNavbar .nav-link {
+  color: #F1F1F1 !important;
+}
+
+body.dark-mode #mainNavbar .nav-link:hover,
+body.dark-mode #mainNavbar .nav-link.active {
+  color: var(--primary) !important;
+}
+
+body.dark-mode #mainNavbar .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+body.dark-mode #mainNavbar .navbar-toggler-icon {
+  filter: invert(1);
+}
+
+body.dark-mode .btn-icon {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+body.dark-mode .navbar-collapse {
+  background-color: #0A0A14 !important;
+}
+
+
+/* ============================================================
+   7. HERO SECTION
+   ============================================================ */
 
 .hero-section {
   min-height: 100vh;
   position: relative;
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 
 .hero-bg,
@@ -165,6 +249,7 @@ h4 {
 }
 
 .hero-bg img {
+  width: 100%;
   height: 100%;
   object-fit: cover;
 }
@@ -175,14 +260,14 @@ h4 {
 
 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   color: var(--white);
 }
 
 .hero-title {
-  font-size: 4rem;
+  font-size: clamp(2.2rem, 5vw, 4rem);
   font-weight: 800;
-  color: var(--white);
+  color: #FFFFFF;
 }
 
 .hero-title span {
@@ -190,9 +275,10 @@ h4 {
 }
 
 .hero-subtitle {
-  max-width: 600px;
+  max-width: 580px;
   margin: 1rem 0 2rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
 }
 
 .hero-cta-group {
@@ -201,16 +287,121 @@ h4 {
   flex-wrap: wrap;
 }
 
-/* ================= BOUTONS ================= */
+/* Points décoratifs dans le hero */
+.hero-content::before {
+  content: "";
+  position: absolute;
+  top: 80px;
+  right: 160px;
+  width: 16px;
+  height: 16px;
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(245, 166, 35, 0.6);
+}
+
+.hero-content::after {
+  content: "";
+  position: absolute;
+  bottom: 100px;
+  right: 40px;
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(233, 69, 96, 0.6);
+}
+
+/* Cercles décoratifs hero */
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  right: -120px;
+  width: 650px;
+  height: 650px;
+  border: 3px solid rgba(245, 166, 35, 0.25);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.hero-section::after {
+  content: "";
+  position: absolute;
+  bottom: -250px;
+  left: -200px;
+  width: 750px;
+  height: 750px;
+  border: 3px solid rgba(0, 102, 255, 0.15);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Conteneur des lignes supplémentaires */
+.hero-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-lines span:nth-child(1) {
+  position: absolute;
+  width: 1100px;
+  height: 1100px;
+  border: 2px solid rgba(245, 166, 35, 0.12);
+  border-radius: 50%;
+  top: -480px;
+  right: -320px;
+}
+
+.hero-lines span:nth-child(2) {
+  position: absolute;
+  width: 850px;
+  height: 850px;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hero-lines span:nth-child(3) {
+  position: absolute;
+  width: 650px;
+  height: 650px;
+  border: 2px solid rgba(233, 69, 96, 0.12);
+  border-radius: 50%;
+  bottom: -220px;
+  left: -140px;
+}
+
+/* Statistiques */
+.stat-number {
+  font-family: var(--title-font);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+
+/* ============================================================
+   8. BOUTONS
+   ============================================================ */
 
 .btn-primary-custom,
 .btn-secondary-custom,
 .btn-cta-main,
 .btn-submit {
-  padding: 0.9rem 1.5rem;
+  padding: 0.85rem 1.8rem;
   border-radius: 10px;
   font-weight: 700;
   transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  cursor: pointer;
 }
 
 .btn-primary-custom,
@@ -221,154 +412,44 @@ h4 {
 }
 
 .btn-secondary-custom {
-  border: 2px solid var(--white);
-  color: var(--white);
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  color: #FFFFFF;
 }
 
 .btn-primary-custom:hover,
-.btn-secondary-custom:hover,
 .btn-cta-main:hover,
 .btn-submit:hover {
+  background: #e29a1d;
+  color: var(--secondary);
   transform: translateY(-3px);
 }
 
-/* ================= SECTIONS ================= */
-
-section {
-  padding: 100px 0;
-}
-
-/* ================= CARDS ================= */
-
-.category-card,
-.team-card,
-.valeur-card,
-.freelance-card,
-.pricing-card,
-.testimonial-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  transition: var(--transition);
-  box-shadow: var(--shadow);
-}
-
-.category-card:hover,
-.team-card:hover,
-.valeur-card:hover,
-.freelance-card:hover,
-.pricing-card:hover {
-  transform: translateY(-5px);
-}
-
-/* ================= CATEGORIES ================= */
-
-#categories {
-  background: var(--secondary);
-}
-
-#categories .section-title,
-#categories .section-subtitle {
-  color: var(--white);
-}
-
-.category-card {
-  text-align: center;
-  padding: 2rem;
-}
-
-.category-icon {
-  font-size: 2.5rem;
-  color: var(--primary);
-  margin-bottom: 1rem;
-}
-
-/* ================= TÉMOIGNAGES ================= */
-
-#temoignages {
-  background: var(--bg);
-}
-
-.carousel-item {
-  text-align: center;
-  padding: 2rem;
-}
-
-.carousel-item img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: auto;
-  border: 4px solid var(--primary);
-}
-
-.carousel-item h3 {
-  margin-top: 1rem;
-}
-
-.carousel-item p {
-  color: var(--text-light);
-}
-
-/* ================= ABOUT ================= */
-
-.section-equipe {
-  background: var(--secondary);
-}
-
-.section-equipe .section-title,
-.section-equipe .section-subtitle {
-  color: var(--white);
-}
-
-.team-card {
-  overflow: hidden;
-  text-align: center;
-}
-
-.team-photo {
-  height: 250px;
-  object-fit: cover;
-}
-
-.team-card .card-body {
-  padding: 1.5rem;
-}
-
-.team-role {
-  color: var(--primary);
-}
-
-.team-social {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.team-social a {
-  width: 35px;
-  height: 35px;
+.btn-secondary-custom:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: var(--white);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: #FFFFFF;
+  transform: translateY(-3px);
 }
 
-.team-social a:hover {
-  background: var(--primary);
-  color: var(--secondary);
-}
 
-/* ================= BENTO GRID ================= */
+/* ============================================================
+   9. BENTO GRID
+   ============================================================ */
 
 .bento-grid-how,
 .bento-grid-chiffres {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.bento-card-large {
+  grid-column: span 2;
+}
+
+.bento-card-wide {
+  grid-column: span 3;
 }
 
 .bento-card,
@@ -377,61 +458,381 @@ section {
   padding: 2rem;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  
+  border: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
 }
 
 .bento-stat {
   text-align: center;
 }
 
-.stat-number {
-  font-size: 3rem;
+.step-number {
+  font-family: var(--title-font);
+  font-size: 2.5rem;
   font-weight: 800;
   color: var(--primary);
+  opacity: 0.35;
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
-/* ================= FORMULAIRE ================= */
+.step-icon {
+  font-size: 2rem;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.step-title {
+  font-family: var(--title-font);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+/* Lignes décoratives dans les sections */
+#comment-ca-marche,
+#temoignages {
+  position: relative;
+  overflow: hidden;
+}
+
+#comment-ca-marche::before,
+#temoignages::before {
+  content: "";
+  position: absolute;
+  top: 30px;
+  left: -180px;
+  width: 450px;
+  height: 450px;
+  border: 2px solid rgba(245, 166, 35, 0.1);
+  border-radius: 50%;
+}
+
+
+/* ============================================================
+   10. CATÉGORIES
+   ============================================================ */
+
+#categories {
+  background: var(--secondary);
+  position: relative;
+  overflow: hidden;
+}
+
+#categories::before {
+  content: "";
+  position: absolute;
+  top: 30px;
+  left: -180px;
+  width: 450px;
+  height: 450px;
+  border: 2px solid rgba(245, 166, 35, 0.1);
+  border-radius: 50%;
+}
+
+#categories .section-title,
+#categories p {
+  color: #FFFFFF;
+}
+
+.category-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+  padding: 2rem;
+  text-align: center;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.category-card:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(245, 166, 35, 0.3);
+}
+
+.category-card:hover h3,
+.category-card:hover p {
+  color: var(--secondary) !important;
+}
+
+.category-icon {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: block;
+  transition: var(--transition);
+}
+
+.category-card:hover .category-icon {
+  color: var(--secondary);
+}
+
+.category-card h3 {
+  color: #FFFFFF;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.category-card p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+
+/* ============================================================
+   11. TÉMOIGNAGES
+   ============================================================ */
+
+.carousel-item {
+  padding: 2rem;
+}
+
+.carousel-item img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+  border: 3px solid var(--primary);
+}
+
+.carousel-item h3,
+.carousel-item h4 {
+  margin-top: 0.75rem;
+  color: var(--text);
+}
+
+.carousel-item p {
+  color: var(--text-light);
+}
+
+
+/* ============================================================
+   12. FILTRES FREELANCES
+   ============================================================ */
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.btn-filter {
+  font-family: var(--body-font);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.45rem 1rem;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--text-light);
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-filter:hover,
+.btn-filter.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--secondary);
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   13. CARTES COMMUNES
+   ============================================================ */
+
+.card,
+.freelance-card,
+.pricing-card,
+.team-card,
+.valeur-card,
+.testimonial-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.card:hover,
+.freelance-card:hover,
+.pricing-card:hover,
+.team-card:hover,
+.valeur-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ============================================================
+   14. ÉQUIPE (about.html)
+   ============================================================ */
+
+.section-equipe,
+.section-equipe-bg {
+  background: var(--secondary);
+}
+
+.section-equipe .section-title,
+.section-equipe-bg .section-title,
+.section-equipe h2,
+.section-equipe-bg h2 {
+  color: #FFFFFF;
+}
+
+.team-photo {
+  height: 220px;
+  width: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.team-role {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.team-social {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.team-social a {
+  width: 34px;
+  height: 34px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.team-social a:hover {
+  background: var(--primary);
+  color: var(--secondary);
+}
+
+
+/* ============================================================
+   15. FORMULAIRE (contact.html)
+   ============================================================ */
 
 .form-control,
 .form-select {
   border-radius: 10px;
-  padding: 0.8rem 1rem;
+  padding: 0.75rem 1rem;
   border: 1px solid var(--border);
+  background-color: var(--bg);
+  color: var(--text);
+  transition: var(--transition);
 }
 
 .form-control:focus,
 .form-select:focus {
   border-color: var(--primary);
-  box-shadow: none;
+  box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.2);
+  outline: none;
 }
 
-/* ================= FOOTER ================= */
+.form-control.is-valid,
+.form-select.is-valid {
+  border-color: #22C55E;
+}
 
-.site-footer {
-  background: var(--secondary);
-  color: var(--white);
+.form-control.is-invalid,
+.form-select.is-invalid {
+  border-color: var(--accent);
+}
+
+.error-msg {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--accent);
+  margin-top: 0.25rem;
+  min-height: 1.2em;
+}
+
+#successMsg {
+  margin-top: 1rem;
+  padding: 1rem 1.5rem;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid #22C55E;
+  border-radius: 10px;
+  color: #16A34A;
+  font-weight: 600;
+}
+
+
+/* ============================================================
+   16. FOOTER
+   ============================================================ */
+
+.site-footer,
+footer.bg-dark {
+  background: var(--secondary) !important;
+  color: #FFFFFF;
   padding: 80px 0 20px;
 }
 
-.footer-brand,
-.footer-col-title {
-  color: var(--white);
+.footer-brand {
+  font-family: var(--title-font);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #FFFFFF;
 }
 
+.footer-col-title,
+footer h3 {
+  color: #FFFFFF;
+  font-family: var(--title-font);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.footer-desc,
 .footer-links a,
 .footer-contact a,
-.footer-desc {
-  color: rgba(255, 255, 255, 0.7);
+footer ul a,
+footer address p,
+footer address a {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
 }
 
 .footer-links a:hover,
-.footer-contact a:hover {
+.footer-contact a:hover,
+footer ul a:hover,
+footer address a:hover {
   color: var(--primary);
 }
 
 .footer-social {
   display: flex;
-  gap: 0.7rem;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
 }
 
 .footer-social a {
@@ -439,32 +840,41 @@ section {
   height: 38px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
-  color: var(--white);
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1rem;
+  transition: var(--transition);
 }
 
 .footer-social a:hover {
   background: var(--primary);
   color: var(--secondary);
+  transform: translateY(-3px);
 }
 
-.footer-bottom {
+.footer-bottom,
+footer hr + p {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: 2rem;
   padding-top: 1rem;
+  margin-top: 2rem;
   text-align: center;
+  color: rgba(255, 255, 255, 0.4) !important;
+  font-size: 0.85rem;
 }
 
-/* ================= BACK TO TOP ================= */
+
+/* ============================================================
+   17. BOUTON RETOUR EN HAUT
+   ============================================================ */
 
 #backToTop {
   position: fixed;
-  right: 20px;
-  bottom: 20px;
-  width: 45px;
-  height: 45px;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  width: 46px;
+  height: 46px;
   border: none;
   border-radius: 50%;
   background: var(--primary);
@@ -472,9 +882,13 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.4rem;
+  cursor: pointer;
   opacity: 0;
   visibility: hidden;
   transition: var(--transition);
+  z-index: 999;
+  box-shadow: var(--shadow);
 }
 
 #backToTop.visible {
@@ -482,305 +896,183 @@ section {
   visibility: visible;
 }
 
-/* ================= RESPONSIVE ================= */
+#backToTop:hover {
+  background: #e29a1d;
+  transform: translateY(-3px);
+}
+
+
+/* ============================================================
+   18. DARK MODE — Éléments généraux
+   ============================================================ */
+
+body.dark-mode {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+body.dark-mode h1, body.dark-mode h2,
+body.dark-mode h3, body.dark-mode h4,
+body.dark-mode h5, body.dark-mode h6 {
+  color: #F1F1F1;
+}
+
+body.dark-mode p {
+  color: var(--text-light);
+}
+
+/* Cartes */
+body.dark-mode .card,
+body.dark-mode .bento-card,
+body.dark-mode .freelance-card,
+body.dark-mode .pricing-card,
+body.dark-mode .valeur-card,
+body.dark-mode .testimonial-card {
+  background-color: #1A1A2E;
+  border-color: #2D2D4E;
+}
+
+body.dark-mode .card p,
+body.dark-mode .text-muted {
+  color: var(--text-light) !important;
+}
+
+/* Sections claires */
+body.dark-mode .bg-light,
+body.dark-mode .page-hero-inner {
+  background-color: #12122A !important;
+}
+
+/* Formulaire */
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+  background-color: #0F0F1A;
+  border-color: #2D2D4E;
+  color: #F1F1F1;
+}
+
+body.dark-mode .form-control::placeholder {
+  color: #6B7280;
+}
+
+body.dark-mode .form-label {
+  color: #F1F1F1;
+}
+
+/* Accordion */
+body.dark-mode .accordion-item {
+  background-color: #1A1A2E;
+  border-color: #2D2D4E;
+}
+
+body.dark-mode .accordion-button {
+  background-color: #1A1A2E;
+  color: #F1F1F1;
+}
+
+body.dark-mode .accordion-button:not(.collapsed) {
+  background-color: #2D2D4E;
+  color: var(--primary);
+  box-shadow: none;
+}
+
+body.dark-mode .accordion-body {
+  background-color: #1A1A2E;
+  color: var(--text-light);
+}
+
+/* Filtres */
+body.dark-mode .btn-filter {
+  background-color: #1A1A2E;
+  border-color: #2D2D4E;
+  color: var(--text-light);
+}
+
+body.dark-mode .btn-filter.active,
+body.dark-mode .btn-filter:hover {
+  background-color: var(--primary);
+  color: var(--secondary);
+}
+
+/* Sections intérieures */
+body.dark-mode #comment-ca-marche,
+body.dark-mode #temoignages {
+  background-color: #0F0F1A;
+}
+
+body.dark-mode .border-top {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+
+/* ============================================================
+   19. RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 991px) {
+  .bento-grid-how,
+  .bento-grid-chiffres {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bento-card-large,
+  .bento-card-wide {
+    grid-column: span 2;
+  }
+}
 
 @media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem;
-  }
-
-  .section-title {
-    font-size: 2rem;
-  }
-
   section {
     padding: 70px 0;
   }
-}
 
+  .hero-title {
+    font-size: 2.2rem;
+  }
 
-/* =========================================================
-   LIGNES GÉOMÉTRIQUES MODERNES — AFRITALENT
-   À AJOUTER TOUT EN BAS DU CSS
-========================================================= */
+  .section-title {
+    font-size: 1.8rem;
+  }
 
-/* IMPORTANT */
+  .bento-grid-how,
+  .bento-grid-chiffres {
+    grid-template-columns: 1fr;
+  }
 
-body{
-  overflow-x: hidden;
-}
+  .bento-card-large,
+  .bento-card-wide {
+    grid-column: span 1;
+  }
 
-/* =========================================================
-   HERO SECTION
-========================================================= */
-
-.hero-section{
-  position: relative;
-  overflow: hidden;
-}
-/* ==========================================================
-   MOTIFS GEOMETRIQUES HERO
-========================================================== */
-
-.hero-section{
-    position: relative;
-    overflow: hidden;
-}
-
-/* Grand cercle orange */
-
-.hero-section::before{
-    content: "";
-    position: absolute;
-    width: 900px;
-    height: 900px;
-    border: 3px solid rgba(245,166,35,0.25);
-    border-radius: 50%;
-    top: -350px;
-    right: -250px;
-    z-index: 0;
-}
-
-/* Grand cercle rouge */
-
-.hero-section::after{
-    content: "";
-    position: absolute;
-    width: 700px;
-    height: 700px;
-    border: 2px solid rgba(233,69,96,0.20);
-    border-radius: 50%;
-    bottom: -300px;
-    left: -200px;
-    z-index: 0;
-}
-
-/* Conteneur des lignes */
-
-.hero-lines{
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-}
-
-/* Ligne 1 */
-
-.hero-lines span:nth-child(1){
-    position: absolute;
-    width: 1200px;
-    height: 1200px;
-    border: 2px solid rgba(245,166,35,0.15);
-    border-radius: 50%;
-    top: -500px;
-    right: -350px;
-}
-
-/* Ligne 2 */
-
-.hero-lines span:nth-child(2){
-    position: absolute;
-    width: 900px;
-    height: 900px;
-    border: 2px solid rgba(255,255,255,0.10);
-    border-radius: 50%;
-    top: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-/* Ligne 3 */
-
-.hero-lines span:nth-child(3){
-    position: absolute;
-    width: 700px;
-    height: 700px;
-    border: 2px solid rgba(233,69,96,0.15);
-    border-radius: 50%;
-    bottom: -250px;
-    left: -150px;
-}
-
-/* Le contenu reste devant */
-
-.hero-content{
-    position: relative;
-    z-index: 2;
-}
-
-/* Ligne orange */
-
-.hero-section::before{
-  content: "";
-
-  position: absolute;
-
-  top: -50px;
-  right: -120px;
-
-  width: 700px;
-  height: 700px;
-
-  border: 3px solid rgba(245,166,35,0.9);
-
-  border-radius: 50%;
-
-  z-index: 1;
-}
-
-/* Ligne bleue */
-
-.hero-section::after{
-  content: "";
-
-  position: absolute;
-
-  bottom: -250px;
-  left: -200px;
-
-  width: 800px;
-  height: 800px;
-
-  border: 3px solid rgba(0,102,255,0.8);
-
-  border-radius: 50%;
-
-  z-index: 1;
-}
-
-/* =========================================================
-   PETITS POINTS SUR LES LIGNES
-========================================================= */
-
-.hero-content{
-  position: relative;
-  z-index: 5;
-}
-
-/* Point orange */
-
-.hero-content::before{
-  content: "";
-
-  position: absolute;
-
-  top: 100px;
-  right: 180px;
-
-  width: 18px;
-  height: 18px;
-
-  background: #F5A623;
-
-  border-radius: 50%;
-
-  box-shadow: 0 0 20px rgba(245,166,35,.6);
-}
-
-/* Point rose */
-
-.hero-content::after{
-  content: "";
-
-  position: absolute;
-
-  bottom: 120px;
-  right: 40px;
-
-  width: 18px;
-  height: 18px;
-
-  background: #E94560;
-
-  border-radius: 50%;
-
-  box-shadow: 0 0 20px rgba(233,69,96,.6);
-}
-
-/* =========================================================
-   LIGNES DANS LES AUTRES SECTIONS
-========================================================= */
-
-#comment-ca-marche,
-#temoignages,
-#categories{
-  position: relative;
-  overflow: hidden;
-}
-
-/* Ligne légère section */
-
-#comment-ca-marche::before,
-#temoignages::before,
-#categories::before{
-  content: "";
-
-  position: absolute;
-
-  top: 50px;
-  left: -200px;
-
-  width: 500px;
-  height: 500px;
-
-  border: 2px solid rgba(245,166,35,0.15);
-
-  border-radius: 50%;
-}
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:768px){
-
-  .hero-section::before{
+  .hero-section::before {
     width: 400px;
     height: 400px;
+    top: -150px;
+    right: -120px;
   }
 
-  .hero-section::after{
-    width: 450px;
-    height: 450px;
-  }
-
-}
-
-/* =========================================================
-   AJOUT POUR QUE LE SITE SOIT RESPONSIVE 
-========================================================= */
-/* Responsive mobile */
-@media (max-width: 768px) {
-
-  .hero-section::before{
-    width: 500px;
-    height: 500px;
-    top: -200px;
-    right: -150px;
-  }
-
-  .hero-section::after{
-    width: 400px;
-    height: 400px;
+  .hero-section::after {
+    width: 380px;
+    height: 380px;
     bottom: -150px;
     left: -120px;
   }
 
-  .hero-lines span:nth-child(1){
-    width: 600px;
-    height: 600px;
+  .hero-lines span:nth-child(1) {
+    width: 550px;
+    height: 550px;
     top: -250px;
     right: -180px;
   }
 
-  .hero-lines span:nth-child(2){
-    width: 450px;
-    height: 450px;
+  .hero-lines span:nth-child(2) {
+    width: 400px;
+    height: 400px;
   }
 
-  .hero-lines span:nth-child(3){
-    width: 350px;
-    height: 350px;
+  .hero-lines span:nth-child(3) {
+    width: 320px;
+    height: 320px;
     bottom: -120px;
     left: -80px;
   }
