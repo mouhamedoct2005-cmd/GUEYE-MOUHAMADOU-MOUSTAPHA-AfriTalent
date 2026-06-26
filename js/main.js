@@ -278,21 +278,320 @@ elementsAAnimer.forEach(function(el) {
 
 
 /* ============================================================
-   7. ANIMATIONS FADE-IN — Commit 7
+   8. FILTRAGE DYNAMIQUE DES FREELANCES
+   - Les cartes se filtrent par catégorie sans rechargement
+   - Fonctionne sur freelances.html uniquement
    ============================================================ */
 
-// Sera implémenté au Commit 7 avec IntersectionObserver
+// On sélectionne tous les boutons de filtre
+const boutonsFiltre = document.querySelectorAll('.btn-filter');
+
+// On sélectionne toutes les cartes freelances
+const cartesFreelances = document.querySelectorAll('.freelance-item');
+
+// On sélectionne le message "aucun résultat"
+const messageAucunResultat = document.getElementById('noResult');
+
+// On vérifie qu'on est bien sur la page freelances
+// (les boutons de filtre n'existent que sur cette page)
+if (boutonsFiltre.length > 0) {
+
+  // On écoute le clic sur chaque bouton de filtre
+  boutonsFiltre.forEach(function(bouton) {
+
+    bouton.addEventListener('click', function() {
+
+      // --- Étape 1 : mettre à jour le bouton actif ---
+
+      // On retire la classe active de tous les boutons
+      boutonsFiltre.forEach(function(btn) {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+      });
+
+      // On ajoute la classe active au bouton cliqué
+      bouton.classList.add('active');
+      bouton.setAttribute('aria-pressed', 'true');
+
+      // --- Étape 2 : récupérer la catégorie choisie ---
+
+      // On lit la valeur data-category du bouton cliqué
+      const categorieChoisie = bouton.getAttribute('data-category');
+
+      // --- Étape 3 : afficher/masquer les cartes ---
+
+      let nombreVisible = 0; // Compteur de cartes visibles
+
+      cartesFreelances.forEach(function(carte) {
+
+        // On lit la catégorie de la carte
+        const categorieCarte = carte.getAttribute('data-category');
+
+        // Si "tous" est sélectionné OU si la catégorie correspond
+        if (categorieChoisie === 'tous' || categorieCarte === categorieChoisie) {
+
+          // On affiche la carte
+          carte.style.display = 'block';
+          nombreVisible++;
+
+        } else {
+
+          // On cache la carte
+          carte.style.display = 'none';
+        }
+      });
+
+      // --- Étape 4 : afficher message si aucun résultat ---
+
+      if (messageAucunResultat) {
+        if (nombreVisible === 0) {
+          messageAucunResultat.style.display = 'block';
+        } else {
+          messageAucunResultat.style.display = 'none';
+        }
+      }
+
+    }); // fin addEventListener
+  }); // fin forEach boutons
+} // fin if boutonsFiltre
 
 
 /* ============================================================
-   8. FILTRAGE DYNAMIQUE DES FREELANCES — Commit 8
+   9. VALIDATION DU FORMULAIRE DE CONTACT
+   - Tous les champs requis vérifiés
+   - Format email vérifié par regex
+   - Longueur minimum du message (20 caractères)
+   - Messages d'erreur sous chaque champ
+   - Message de succès après soumission
+   - Fonctionne sur contact.html uniquement
    ============================================================ */
 
-// Sera implémenté au Commit 8
+// On sélectionne le bouton d'envoi
+const btnEnvoyer = document.getElementById('submitBtn');
 
+// On vérifie qu'on est bien sur la page contact
+if (btnEnvoyer) {
 
-/* ============================================================
-   9. VALIDATION DU FORMULAIRE — Commit 8
-   ============================================================ */
+  // --- Fonction utilitaire : afficher une erreur ---
+  function afficherErreur(idChamp, message) {
 
-// Sera implémenté au Commit 8
+    const champ = document.getElementById(idChamp);
+    const erreur = document.getElementById(idChamp + '-error');
+
+    if (champ) {
+      // Bordure rouge sur le champ
+      champ.classList.remove('is-valid');
+      champ.classList.add('is-invalid');
+    }
+
+    if (erreur) {
+      // On affiche le message d'erreur
+      erreur.textContent = message;
+    }
+  }
+
+  // --- Fonction utilitaire : afficher un succès ---
+  function afficherSucces(idChamp) {
+
+    const champ = document.getElementById(idChamp);
+    const erreur = document.getElementById(idChamp + '-error');
+
+    if (champ) {
+      // Bordure verte sur le champ
+      champ.classList.remove('is-invalid');
+      champ.classList.add('is-valid');
+    }
+
+    if (erreur) {
+      // On efface le message d'erreur
+      erreur.textContent = '';
+    }
+  }
+
+  // --- Fonction utilitaire : réinitialiser un champ ---
+  function reinitialiserChamp(idChamp) {
+
+    const champ = document.getElementById(idChamp);
+    const erreur = document.getElementById(idChamp + '-error');
+
+    if (champ) {
+      champ.classList.remove('is-valid', 'is-invalid');
+    }
+
+    if (erreur) {
+      erreur.textContent = '';
+    }
+  }
+
+  // --- Fonction principale : valider le formulaire ---
+  function validerFormulaire() {
+
+    // On suppose que le formulaire est valide
+    let formulaireValide = true;
+
+    // ---- Validation du champ NOM ----
+    
+const nom = document.getElementById('nom');
+
+// Regex qui accepte uniquement les lettres (accents compris), espaces et tirets
+const regexNom = /^[a-zA-ZÀ-ÿ\s\-']+$/;
+
+if (nom) {
+  if (nom.value.trim() === '') {
+    afficherErreur('nom', 'Le nom est obligatoire.');
+    formulaireValide = false;
+  } else if (nom.value.trim().length < 2) {
+    afficherErreur('nom', 'Le nom doit contenir au moins 2 caractères.');
+    formulaireValide = false;
+  } else if (!regexNom.test(nom.value.trim())) {
+    afficherErreur('nom', 'Le nom ne doit contenir que des lettres.');
+    formulaireValide = false;
+  } else {
+    afficherSucces('nom');
+  }
+}
+
+    // ---- Validation du champ PRÉNOM ----
+    
+const prenom = document.getElementById('prenom');
+
+// Même regex que le nom
+const regexPrenom = /^[a-zA-ZÀ-ÿ\s\-']+$/;
+
+if (prenom) {
+  if (prenom.value.trim() === '') {
+    afficherErreur('prenom', 'Le prénom est obligatoire.');
+    formulaireValide = false;
+  } else if (prenom.value.trim().length < 2) {
+    afficherErreur('prenom', 'Le prénom doit contenir au moins 2 caractères.');
+    formulaireValide = false;
+  } else if (!regexPrenom.test(prenom.value.trim())) {
+    afficherErreur('prenom', 'Le prénom ne doit contenir que des lettres.');
+    formulaireValide = false;
+  } else {
+    afficherSucces('prenom');
+  }
+}
+
+    // ---- Validation du champ EMAIL ----
+    const email = document.getElementById('email');
+
+    if (email) {
+
+      // Regex pour vérifier le format de l'email
+      // ex: exemple@domaine.com
+      const regexEmail = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+
+      if (email.value.trim() === '') {
+        afficherErreur('email', "L'email est obligatoire.");
+        formulaireValide = false;
+      } else if (!regexEmail.test(email.value.trim())) {
+        afficherErreur('email', "Le format de l'email est invalide. Ex: nom@domaine.com");
+        formulaireValide = false;
+      } else {
+        afficherSucces('email');
+      }
+    }
+
+    // ---- Validation du champ SUJET ----
+    const sujet = document.getElementById('sujet');
+
+    if (sujet) {
+      if (sujet.value === '' || sujet.value === null) {
+        afficherErreur('sujet', 'Veuillez choisir un sujet.');
+        formulaireValide = false;
+      } else {
+        afficherSucces('sujet');
+      }
+    }
+
+    // ---- Validation du champ MESSAGE ----
+    const message = document.getElementById('message');
+
+    if (message) {
+      if (message.value.trim() === '') {
+        afficherErreur('message', 'Le message est obligatoire.');
+        formulaireValide = false;
+      } else if (message.value.trim().length < 20) {
+        afficherErreur('message',
+          'Le message doit contenir au moins 20 caractères. ' +
+          '(' + message.value.trim().length + '/20)'
+        );
+        formulaireValide = false;
+      } else {
+        afficherSucces('message');
+      }
+    }
+
+    return formulaireValide;
+  }
+
+  // --- Écoute du clic sur le bouton Envoyer ---
+  btnEnvoyer.addEventListener('click', function() {
+
+    // On lance la validation
+    const estValide = validerFormulaire();
+
+    // Si tout est valide
+    if (estValide) {
+
+      // On affiche le message de succès
+      const msgSucces = document.getElementById('successMsg');
+
+      if (msgSucces) {
+        msgSucces.style.display = 'block';
+        msgSucces.classList.remove('d-none');
+      }
+
+      // On désactive le bouton pour éviter un double envoi
+      btnEnvoyer.disabled = true;
+      btnEnvoyer.textContent = '✓ Message envoyé !';
+
+      // On réinitialise tous les champs après 4 secondes
+      setTimeout(function() {
+
+        // Réinitialisation des champs
+        const champs = ['nom', 'prenom', 'email', 'sujet', 'message'];
+        champs.forEach(function(id) {
+          const champ = document.getElementById(id);
+          if (champ) {
+            champ.value = '';
+            reinitialiserChamp(id);
+          }
+        });
+
+        // On cache le message de succès
+        if (msgSucces) {
+          msgSucces.style.display = 'none';
+        }
+
+        // On réactive le bouton
+        btnEnvoyer.disabled = false;
+        btnEnvoyer.innerHTML = '<i class="bi bi-send-fill me-2"></i> Envoyer le message';
+
+      }, 4000);
+    }
+  });
+
+  // --- Validation en temps réel ---
+  // Les erreurs disparaissent dès que l'utilisateur corrige
+
+  const champsAValider = ['nom', 'prenom', 'email', 'sujet', 'message'];
+
+  champsAValider.forEach(function(id) {
+
+    const champ = document.getElementById(id);
+
+    if (champ) {
+      // On écoute la saisie en temps réel
+      champ.addEventListener('input', function() {
+
+        // Si le champ n'est plus vide, on retire l'erreur
+        if (champ.value.trim() !== '') {
+          reinitialiserChamp(id);
+        }
+      });
+    }
+  });
+
+} // fin if btnEnvoyer
