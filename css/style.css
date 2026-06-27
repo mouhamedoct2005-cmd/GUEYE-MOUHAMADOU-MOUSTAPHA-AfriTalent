@@ -685,53 +685,13 @@ body.dark-mode .navbar-collapse {
 
 .section-equipe,
 .section-equipe-bg {
-  background: var(--secondary);
+  background-color: #F9F9F9; /* fond clair en light mode */
 }
 
-.section-equipe .section-title,
-.section-equipe-bg .section-title,
-.section-equipe h2,
-.section-equipe-bg h2 {
-  color: #FFFFFF;
+body.dark-mode .section-equipe,
+body.dark-mode .section-equipe-bg {
+  background-color: #0A0A14 !important;
 }
-
-.team-photo {
-  height: 220px;
-  width: 100%;
-  object-fit: cover;
-  object-position: top;
-}
-
-.team-role {
-  color: var(--primary);
-  font-weight: 600;
-}
-
-.team-social {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.team-social a {
-  width: 34px;
-  height: 34px;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--secondary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-  transition: var(--transition);
-}
-
-.team-social a:hover {
-  background: var(--primary);
-  color: var(--secondary);
-}
-
 
 /* ============================================================
    15. FORMULAIRE (contact.html)

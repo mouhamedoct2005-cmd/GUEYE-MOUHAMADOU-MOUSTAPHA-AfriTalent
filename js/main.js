@@ -595,3 +595,404 @@ if (prenom) {
   });
 
 } // fin if btnEnvoyer
+
+/* ============================================================
+   10. ANIMATION ÉTOILES AVANCÉE
+   - Étoiles de différentes formes et tailles
+   - Traînées lumineuses (shooting stars)
+   - Pulsation et rotation
+   - Adaptation au thème
+   ============================================================ */
+
+// ---- Conteneur principal ----
+const conteneurEtoiles = document.createElement('div');
+conteneurEtoiles.id = 'etoiles-bg';
+conteneurEtoiles.style.cssText = `
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+`;
+document.body.appendChild(conteneurEtoiles);
+
+// ---- Injection des keyframes CSS ----
+const styleEtoiles = document.createElement('style');
+styleEtoiles.textContent = `
+
+  /* Scintillement simple */
+  @keyframes scintiller {
+    0%   { opacity: 0.1; transform: scale(0.6); }
+    50%  { opacity: 1;   transform: scale(1.5); }
+    100% { opacity: 0.2; transform: scale(0.8); }
+  }
+
+  /* Pulsation avec halo */
+  @keyframes pulser {
+    0%   { opacity: 0.2; transform: scale(0.8);  box-shadow: 0 0 2px 1px currentColor; }
+    50%  { opacity: 1;   transform: scale(1.6);  box-shadow: 0 0 8px 4px currentColor; }
+    100% { opacity: 0.2; transform: scale(0.8);  box-shadow: 0 0 2px 1px currentColor; }
+  }
+
+  /* Rotation d'étoile à 4 branches */
+  @keyframes tourner {
+    0%   { transform: rotate(0deg)   scale(1);   opacity: 0.6; }
+    50%  { transform: rotate(180deg) scale(1.4); opacity: 1;   }
+    100% { transform: rotate(360deg) scale(1);   opacity: 0.6; }
+  }
+
+  /* Étoile filante */
+  @keyframes filer {
+    0%   { transform: translateX(0)    translateY(0)    scaleX(1);   opacity: 1; }
+    80%  { opacity: 1; }
+    100% { transform: translateX(300px) translateY(150px) scaleX(8);  opacity: 0; }
+  }
+
+  /* Apparition douce */
+  @keyframes apparaitre {
+    0%   { opacity: 0; transform: scale(0); }
+    50%  { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 0; transform: scale(0); }
+  }
+
+  /* Forme étoile à 4 branches */
+  .etoile-croix {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .etoile-croix::before,
+  .etoile-croix::after {
+    content: '';
+    position: absolute;
+    background: currentColor;
+    border-radius: 2px;
+  }
+
+  .etoile-croix::before {
+    width: 100%;
+    height: 30%;
+    top: 35%;
+    left: 0;
+  }
+
+  .etoile-croix::after {
+    width: 30%;
+    height: 100%;
+    top: 0;
+    left: 35%;
+  }
+`;
+document.head.appendChild(styleEtoiles);
+
+
+// ---- Couleurs selon le thème ----
+
+
+
+// ---- Données de toutes les étoiles ----
+const listeEtoiles = [];
+
+
+// ============================================================
+// TYPE 1 — Petits points scintillants (50 étoiles)
+// ============================================================
+for (let i = 0; i < 50; i++) {
+
+  const el = document.createElement('div');
+
+  const x       = Math.random() * 100;
+  const y       = Math.random() * 100;
+  const taille  = Math.random() * 3 + 1;
+  const duree   = Math.random() * 4 + 2;
+  const delai   = Math.random() * 6;
+
+  el.style.cssText = `
+    position: absolute;
+    left: ${x}%;
+    top: ${y}%;
+    width: ${taille}px;
+    height: ${taille}px;
+    border-radius: 50%;
+    background-color: ${getCouleurEtoile()};
+    animation: scintiller ${duree}s ${delai}s infinite ease-in-out;
+  `;
+
+  conteneurEtoiles.appendChild(el);
+
+  listeEtoiles.push({
+    element: el,
+    x, y,
+    vx: (Math.random() - 0.5) * 0.015,
+    vy: (Math.random() - 0.5) * 0.015,
+    type: 'point'
+  });
+}
+
+
+// ============================================================
+// TYPE 2 — Étoiles pulsantes avec halo (20 étoiles)
+// ============================================================
+for (let i = 0; i < 20; i++) {
+
+  const el = document.createElement('div');
+
+  const x      = Math.random() * 100;
+  const y      = Math.random() * 100;
+  const taille = Math.random() * 1.5 + 0.5;
+  const duree  = Math.random() * 3 + 2;
+  const delai  = Math.random() * 5;
+  const couleur = getCouleurEtoile();
+
+  el.style.cssText = `
+    position: absolute;
+    left: ${x}%;
+    top: ${y}%;
+    width: ${taille}px;
+    height: ${taille}px;
+    border-radius: 50%;
+    background-color: ${couleur};
+    color: ${couleur};
+    animation: pulser ${duree}s ${delai}s infinite ease-in-out;
+  `;
+
+  conteneurEtoiles.appendChild(el);
+
+  listeEtoiles.push({
+    element: el,
+    x, y,
+    vx: (Math.random() - 0.5) * 0.01,
+    vy: (Math.random() - 0.5) * 0.01,
+    type: 'halo'
+  });
+}
+
+
+// ============================================================
+// TYPE 3 — Étoiles à 4 branches qui tournent (15 étoiles)
+// ============================================================
+for (let i = 0; i < 15; i++) {
+
+  const el = document.createElement('div');
+  el.className = 'etoile-croix';
+
+  const x      = Math.random() * 100;
+  const y      = Math.random() * 100;
+  const taille = Math.random() * 12 + 8;
+  const duree  = Math.random() * 5 + 3;
+  const delai  = Math.random() * 4;
+  const couleur = getCouleurEtoile();
+
+  el.style.cssText = `
+    left: ${x}%;
+    top: ${y}%;
+    width: ${taille}px;
+    height: ${taille}px;
+    color: ${couleur};
+    animation: tourner ${duree}s ${delai}s infinite linear;
+  `;
+
+  conteneurEtoiles.appendChild(el);
+
+  listeEtoiles.push({
+    element: el,
+    x, y,
+    vx: (Math.random() - 0.5) * 0.008,
+    vy: (Math.random() - 0.5) * 0.008,
+    type: 'croix'
+  });
+}
+
+
+// ============================================================
+// TYPE 4 — Étoiles filantes (générées périodiquement)
+// ============================================================
+function creerEtoileFilante() {
+
+  const el = document.createElement('div');
+
+  // Départ aléatoire sur le bord gauche ou en haut
+  const x = Math.random() * 60;
+  const y = Math.random() * 40;
+
+  const longueur = Math.random() * 80 + 40;
+  const duree    = Math.random() * 1.5 + 0.8;
+  const couleur  = getCouleurEtoile();
+
+  el.style.cssText = `
+    position: absolute;
+    left: ${x}%;
+    top: ${y}%;
+    width: ${longueur}px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, ${couleur});
+    border-radius: 2px;
+    transform-origin: left center;
+    transform: rotate(${Math.random() * 30 + 15}deg);
+    animation: filer ${duree}s ease-out forwards;
+  `;
+
+  conteneurEtoiles.appendChild(el);
+
+  // On supprime l'étoile filante après son animation
+  setTimeout(function() {
+    if (el.parentNode) {
+      el.parentNode.removeChild(el);
+    }
+  }, duree * 1000 + 100);
+}
+
+// On crée une étoile filante toutes les 2 à 5 secondes
+function lancerEtoilesFilantes() {
+  creerEtoileFilante();
+  const prochaine = Math.random() * 3000 + 2000;
+  setTimeout(lancerEtoilesFilantes, prochaine);
+}
+lancerEtoilesFilantes();
+
+
+// ============================================================
+// TYPE 5 — Particules qui apparaissent et disparaissent (20)
+// ============================================================
+for (let i = 0; i < 20; i++) {
+
+  const el = document.createElement('div');
+
+  const x      = Math.random() * 100;
+  const y      = Math.random() * 100;
+  const taille = Math.random() * 5 + 2;
+  const duree  = Math.random() * 3 + 2;
+  const delai  = Math.random() * 8;
+
+  el.style.cssText = `
+    position: absolute;
+    left: ${x}%;
+    top: ${y}%;
+    width: ${taille}px;
+    height: ${taille}px;
+    border-radius: 50%;
+    background-color: ${getCouleurEtoile()};
+    animation: apparaitre ${duree}s ${delai}s infinite ease-in-out;
+  `;
+
+  conteneurEtoiles.appendChild(el);
+
+  listeEtoiles.push({
+    element: el,
+    x, y,
+    vx: 0,
+    vy: 0,
+    type: 'particule'
+  });
+}
+
+
+// ============================================================
+// ANIMATION DE DÉPLACEMENT — requestAnimationFrame
+// ============================================================
+function animerEtoiles() {
+
+  listeEtoiles.forEach(function(etoile) {
+
+    // Déplacement lent
+    etoile.x += etoile.vx;
+    etoile.y += etoile.vy;
+
+    // Rebond sur les bords
+    if (etoile.x > 100) etoile.x = 0;
+    if (etoile.x < 0)   etoile.x = 100;
+    if (etoile.y > 100) etoile.y = 0;
+    if (etoile.y < 0)   etoile.y = 100;
+
+    etoile.element.style.left = etoile.x + '%';
+    etoile.element.style.top  = etoile.y + '%';
+  });
+
+  requestAnimationFrame(animerEtoiles);
+}
+
+animerEtoiles();
+
+
+// ============================================================
+// ADAPTATION AU CHANGEMENT DE THÈME
+// ============================================================
+// ---- Couleurs selon le thème ----
+function getCouleurEtoile() {
+  const isDark = document.body.classList.contains('dark-mode');
+
+  // Light mode : tons dorés et gris très doux
+  const couleursLight = [
+    'rgba(245, 166, 35, 0.25)',   // orange doux
+    'rgba(245, 166, 35, 0.15)',   // orange très discret
+    'rgba(180, 150, 80, 0.2)',    // doré discret
+    'rgba(200, 180, 120, 0.2)',   // beige doré
+    'rgba(150, 130, 80, 0.15)',   // brun doré
+  ];
+
+  // Dark mode : couleurs vives
+  const couleursDark = [
+    '#F5A623',
+    '#FFD580',
+    '#E94560',
+    '#FFFFFF',
+    '#A0C4FF',
+  ];
+
+  const palette = isDark ? couleursDark : couleursLight;
+  return palette[Math.floor(Math.random() * palette.length)];
+}
+
+
+// ---- Adaptation au changement de thème ----
+function adapterCouleursEtoiles() {
+
+  const isDark = document.body.classList.contains('dark-mode');
+
+  // Couleurs light mode
+  const couleursLight = [
+    'rgba(245, 166, 35, 0.25)',
+    'rgba(245, 166, 35, 0.15)',
+    'rgba(180, 150, 80, 0.2)',
+    'rgba(200, 180, 120, 0.2)',
+    'rgba(150, 130, 80, 0.15)',
+  ];
+
+  // Couleurs dark mode
+  const couleursDark = [
+    '#F5A623',
+    '#FFD580',
+    '#E94560',
+    '#FFFFFF',
+    '#A0C4FF',
+  ];
+
+  listeEtoiles.forEach(function(etoile) {
+
+    const palette = isDark ? couleursDark : couleursLight;
+    const nouvelleCouleur = palette[Math.floor(Math.random() * palette.length)];
+
+    if (etoile.type === 'croix') {
+      etoile.element.style.color = nouvelleCouleur;
+    } else {
+      etoile.element.style.backgroundColor = nouvelleCouleur;
+    }
+  });
+
+  // Étoiles filantes : visibles dans les deux modes
+  // mais plus discrètes en light mode
+  conteneurEtoiles.style.opacity = isDark ? '1' : '0.6';
+}
+
+// On détecte le changement de thème
+const observateurTheme = new MutationObserver(adapterCouleursEtoiles);
+observateurTheme.observe(document.body, {
+  attributes: true,
+  attributeFilter: ['class']
+});
+
+// Appel initial
+adapterCouleursEtoiles();
